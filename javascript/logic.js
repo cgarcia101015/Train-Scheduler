@@ -68,9 +68,31 @@ var config = {
     var frequency = trnFreq;
 
     // Prettify the train time
-    var trnTimePretty = moment.unix(trnTime).format("HH:mm");
+    var trnTimePretty = moment.unix(trnTime).format("hh:mm A");
+
+    // Convert first trtain time
+    var firstTrainTime = moment(firstTime, "HH:mm");
 
     // Calculate next arrival
+    var currentTime = moment();
+    console.log(moment(currentTime).format("HH:mm"));
+
+    // Determine time between current time and next train
+    var differenceInTime = moment().diff(firstTrainTime, "minutes");
+    console.log(differenceInTime);
+
+    // Determines remaining time
+    var timeRemainder = differenceInTime % frequency;
+    console.log(timeRemainder);
+
+    // Time until next train
+    var timeUntilNextTrain = frequency - timeRemainder;
+    console.log("Time until next train arrives: " + timeUntilNextTrain);
+
+    // Next Train
+    var nextTrain = moment().add(timeUntilNextTrain, "minutes");
+    console.log("Train Arrival: " + moment(nextTrain).format("hh:mm"));
+
 
 
 
@@ -78,8 +100,9 @@ var config = {
     var newRow = $("<tr>").append(
         $("<td>").text(trnName),
         $("<td>").text(trnDest),
-        $("<td>").text(trnTime),
-        $("<td>").text(trnFreq)
+        $("<td>").text(trnFreq),
+        $("<td>").text(moment(nextTrain).format("hh:mm")),
+        $("<td>").text(timeUntilNextTrain),
     );
 
     // Append the new row to the table
